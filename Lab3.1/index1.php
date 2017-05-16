@@ -19,13 +19,19 @@
 			<li class="menuLi"><a class="menuLiA" href="index.php">About</a></li>
 			
 			</ul>
-			<button class="menuLiLogout" onclick="clickLogout()"> <?php session_start(); echo $_SESSION['username'] ?> </button>
+			<button onclick="clickLogout()" class="menuLiLogout" > <?php session_start(); echo $_SESSION['username'] ?> </button>
 			<img src="Image/fotosh.jpg"
 			style='height: 100%; width: 100%; object-fit: cover' />
-			
-		
 
 	</div>
+	
+	
+	<form id="logout01"  action="logout.php" method="post">
+             
+                <button  type="submit" >Logout</button>                   
+                  </form>
+	
+	
 	<div class="mapContainer" id="map"></div>
 	<script>
 
