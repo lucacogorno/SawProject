@@ -14,26 +14,28 @@ if ($conn->connect_error) {
 }
 
 $usernameIns = trim ( $_POST ["lname"] );
-$passwordIns = password_hash(trim($_POST ["lpsw"]), PASSWORD_DEFAULT);
-$stmt = $conn->prepare ( "SELECT username, password FROM users_creds WHERE username = ? AND password=?" );
-$stmt->bind_param ( "ss", $usernameIns, $passwordIns );
+$passwordIns = trim($_POST ["lpsw"]);
+$stmt = $conn->prepare ( "SELECT password FROM users_creds WHERE username = ?" );
+$stmt->bind_param ( "s", $usernameIns );
 $stmt->execute ();
+$stmt->bind_result($passwordRec);
 $stmt->store_result();
 
-echo $stmt->num_rows;
-
-if ($stmt->num_rows > 0) {
-	echo $usernameIns;
+if ($stmt->num_rows == 1) {
+	$stmt->fetch();
+	if(password_verify($passwordIns, $passwordRec))
+	{
 	session_start();
 	$_SESSION ['username'] = $usernameIns;
 	if (!empty($_POST ["cbox"])) {
 		setcookie ( "loginCookie", $usernameIns, time () + (86400 * 30), "/" );			
 	}
 	header ( 'Location:index1.php' );
+	}
 }else{
 echo "non loggato";
 echo $passwordIns;
 }
-$stmt->fetch();
+
 $stmt->close ();
 ?>
