@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 }
 
 $usernameIns = trim ( $_POST ["lname"] );
-$passwordIns = md5 (trim($_POST ["lpsw"]));
+$passwordIns = password_hash(trim($_POST ["lpsw"]), PASSWORD_DEFAULT);
 $stmt = $conn->prepare ( "SELECT username, password FROM users_creds WHERE username = ? AND password=?" );
 $stmt->bind_param ( "ss", $usernameIns, $passwordIns );
 $stmt->execute ();
@@ -32,6 +32,7 @@ if ($stmt->num_rows > 0) {
 	header ( 'Location:index1.php' );
 }else{
 echo "non loggato";
+echo $passwordIns;
 }
 $stmt->fetch();
 $stmt->close ();

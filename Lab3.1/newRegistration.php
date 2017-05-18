@@ -21,11 +21,9 @@ $stmt->bind_param("sss", $username, $email, $password);
 //POST data
 $username = trim($_POST['uname']);
 $email = trim($_POST['email']);
-$password = md5(trim($_POST['psw']));
+$password = password_hash(trim($_POST['psw']), PASSWORD_DEFAULT);
 $stmt->execute();
 
-
-echo "New records created successfully";
 
 $stmt->close();
 $conn->close();
